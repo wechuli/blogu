@@ -6,6 +6,8 @@ Technology Stack
     -React front-end(later)
 
 Functionality
+
+
     -Users should be able to sign up
     -Only Signed in users are allowed to author blogs and edit only blogs they have authored
     -Signed in users can also view blogs labelled as 'public' or 'restricted'

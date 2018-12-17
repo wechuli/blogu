@@ -14,6 +14,8 @@ Technology Stack
 
     -NodeJs/Express
     -Azure CosmosDB(Mongo API)
+    -Azure Functions
+    -Azure Cognitive Services
     -React front-end(later)
 
 Functionality
@@ -30,7 +32,7 @@ Functionality
     -Only comment writers can delete them
     -Anonymous users should be able to view the details of bloggers who have labelled their profiles as public
     -Anonymous users cannot view any blogs or any users labelled 'restricted'
-    -Include text analytics from Microsoft Cognitive Services to automatically detect the language of the blog post and Identify the key words and phrases the blog is taking about
+    -Include text analytics from Microsoft Cognitive Services to automatically detect the language of the blog post and Identify the key words and phrases the blog is taking about, this functionality though possible to implement through the api itself will be implemented by an Azure Function App which will be triggered every time a new document is added to our Cosmos DB(now you know why I choose Cosmos :)).The function will query the text analytics service and write back the result to the Cosmos DB (but wouldn't this cause an infinite loop if it is writing back to the same function ??? will found out when I implement it)
     -Deploy to Azure App Service or Ellastic Beanstalk
     
 Routes

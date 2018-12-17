@@ -74,9 +74,10 @@ Things to Use
     -jsonwebtokens
 
 
-Additional Functionality(For Future Implementation)
+Additional Functionality(For the near Future Implementation)
 
-
+    -Write automated tests for the api and hook it up to a continous delivery pipeline such as Travis CI, Azure Pipeline or AWS CodePipeline
+    -Add Social Authentication - Twitter,Facebook,Google,LinkedIn
     -React front-end
     -React Native mobile applications
     -Functionality to enable upload of profile pictures and pictures for the particular blog- use with Azure Blob Storage or Amazon S3

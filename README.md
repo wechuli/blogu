@@ -1,6 +1,8 @@
 # blogu
 This is a blog API to implement simple funtionality of a basic blog
 Technology Stack
+
+
     -NodeJs/Express
     -Azure CosmosDB(Mongo API)
     -React front-end(later)
@@ -47,11 +49,15 @@ Routes
 
 
 Models
+
+
     -Users
     -Blog
     -Comment
   
 Things to Use 
+
+
     -passport
     -passport-jwt
     -passport-local
@@ -60,6 +66,8 @@ Things to Use
 
 
 Additional Functionality(For Future Implementation)
+
+
 -React front-end
 -React Native mobile applications
 -Functionality to enable upload of profile pictures and pictures for the particular blog- use with Azure Blob Storage or Amazon S3

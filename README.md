@@ -21,7 +21,7 @@ Functionality
     
 Routes
     Users
-        -POST  users/user   - create a new user
+        -POST  users/create   - create a new user
         -GET   users/   - return all users who have listed their profiles as 'public' or 'restricted'
         -GET users/public    -return all users who have listed their profiles as 'public' ( used by anonymous users)
         -PUT users/user/:userId  -Edit all details of a user

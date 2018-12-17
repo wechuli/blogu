@@ -18,6 +18,7 @@ Functionality
     -Anonymous users should be able to view the details of bloggers who have labelled their profiles as public
     -Anonymous users cannot view any blogs or any users labelled 'restricted'
     -Include text analytics from Microsoft Cognitive Services to automatically detect the language of the blog post and Identify the key words and phrases the blog is taking about
+    -Deploy to Azure App Service or Ellastic Beanstalk
     
 Routes
     Users

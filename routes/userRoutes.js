@@ -1,4 +1,4 @@
-const router = require("express-promise-router")();
+const router = require("express").Router();
 const userController = require("../controllers/userController");
 
 router.get("/", userController.getAllUsers);

@@ -1,5 +1,14 @@
 # blogu
+
 This is a blog API to implement simple funtionality of a basic blog
+
+Installation
+
+
+    -Simply download the souce file and run npm install(assuming you have node installed)
+    -Next, use nodemon to run the server or "npm run start" if nodemon is not installed
+
+
 Technology Stack
 
 
@@ -68,9 +77,9 @@ Things to Use
 Additional Functionality(For Future Implementation)
 
 
--React front-end
--React Native mobile applications
--Functionality to enable upload of profile pictures and pictures for the particular blog- use with Azure Blob Storage or Amazon S3
+    -React front-end
+    -React Native mobile applications
+    -Functionality to enable upload of profile pictures and pictures for the particular blog- use with Azure Blob Storage or Amazon S3
 
   
  

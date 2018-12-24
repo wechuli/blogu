@@ -9,6 +9,7 @@ const env = require("dotenv").load(); //Use the .env file to load the variables
 const blogRouter = require("./routes/blogRoutes");
 const userRouter = require("./routes/userRoutes");
 
+
 //Instantiate the express instance
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 app.use(passport.initialize());
+
 
 //Connect to Cosmos DB
 
@@ -49,6 +51,7 @@ app.use(bodyParser.json());
 
 app.use("/users", userRouter);
 app.use("/blogs", blogRouter);
+
 
 //Error 404 handling
 

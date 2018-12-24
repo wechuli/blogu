@@ -19,6 +19,7 @@ const blogSchema = new Schema({
   visibility: {
     type: String,
     enum: ["public", "private", "restricted", "draft"]
+  
   },
   published_date: Date,
   edit_date: Date,
@@ -30,7 +31,7 @@ const blogSchema = new Schema({
   ],
   language: String,
   keyphrases: [String],
-  sentiment:Number
+  sentiment: Number
 });
 
 module.exports = mongoose.model("blog", blogSchema);

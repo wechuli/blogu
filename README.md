@@ -41,6 +41,9 @@ Routes
     Users
         -POST  users/create   - create a new user
         -GET   users/   - return all users who have listed their profiles as 'public' or 'restricted'
+        -POST users/auth/facebook -authenticate with facebook,
+        -POST users/auth/google -authenticate with Google,
+        -POST users/auth/twitter -authenticate with twitter,
         -GET users/public    -return all users who have listed their profiles as 'public' ( used by anonymous users)
         -PUT users/user/:userId  -Edit all details of a user
         -PATCH users/user/:userId -Edit specicif details of a user

@@ -1,8 +1,13 @@
 const router = require("express").Router();
 const userController = require("../controllers/userController");
+const { singupValidation, schemas } = require("../helpers/validationHelper");
 
 router.get("/", userController.getAllUsers);
-router.post("/signup", userController.createNewUser);
+router.post(
+  "/signup",
+  singupValidation(schemas.userSignUpSchema),
+  userController.createNewUser
+);
 router.post("/signin", userController.signIn);
 
 router.post("/auth/facebook", userController.facebookAuth);

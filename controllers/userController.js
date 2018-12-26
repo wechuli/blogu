@@ -14,8 +14,26 @@ module.exports = {
   //create a new local user, and send back jwt token
   createNewUser: async (req, res) => {
     try {
-      const newUser = new User(req.body);
-      newUser.blogger_since = Date.now();
+      // console.log(req.body);
+      // console.log(req.value.body);
+      // if (User.findOne({ email: req.body.email }) !== null) {
+      //   return res.status(500).json({ error: "The User already exists" });
+      // }
+
+      const findexistingUser = await User.findOne({ email: req.value.body.email });
+
+      if (findexistingUser !== null) {
+        return res.status(500).json({ error: "The User already exists" });
+      }
+      const userReq = {
+        firstName: req.value.body.firstName,
+        email: req.value.body.email,
+        "local.password": req.value.body.password,
+        blogger_since: Date.now(),
+        method: "local"
+      };
+      const newUser = await new User(userReq);
+
       await newUser.save();
       res.status(201).json({ message: "New User Created", user: newUser });
     } catch (error) {

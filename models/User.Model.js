@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const Schema = mongoose.Schema;
 
@@ -50,5 +51,33 @@ const userSchema = new Schema({
   },
   dob: Date
 });
+
+userSchema.pre("save", async function(next) {
+  try {
+    if (this.method !== "local") {
+      next();
+    }
+    //Genrate a salt
+    const salt = await bcrypt.genSalt(10);
+    //Generate password hash  salt+password
+    const passwordhash = await bcrypt.hash(this.local.password, salt); //hash the password
+
+    //reasign the hashed password as the new password
+    this.local.password = passwordhash;
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+//To validate the password, we define a method
+
+userSchema.methods.isValidPassword = async function(newPassword) {
+  try {
+    return await bcrypt.compare(newPassword, this.local.password);
+  } catch (error) {
+    throw new Error();
+  }
+};
 
 module.exports = mongoose.model("user", userSchema);

@@ -27,20 +27,37 @@ app.use(passport.initialize());
 
 //Connect to Cosmos DB Database
 mongoose.Promise = global.Promise; //Make the global promise equal to the mongoose promise
+
 mongoose
   .connect(
-    process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb",
+    process.env.MONGO_CONNSTR,
     {
       useCreateIndex: true,
       useNewUrlParser: true,
       auth: {
-        user: process.env.COSMODDB_USER,
-        password: process.env.COSMOSDB_PASSWORD
+        user: process.env.MONGO_USER,
+        password: process.env.MONGO_PASSWORD
       }
     }
   )
-  .then(() => console.log("Connection to CosmosDB successful"))
+  .then(() => console.log("Connection to MongoDB Successful"))
   .catch(err => console.error(err));
+
+  //Connecting to Azure's Cosmos DB
+// mongoose
+//   .connect(
+//     process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb",
+//     {
+//       useCreateIndex: true,
+//       useNewUrlParser: true,
+//       auth: {
+//         user: process.env.COSMODDB_USER,
+//         password: process.env.COSMOSDB_PASSWORD
+//       }
+//     }
+//   )
+//   .then(() => console.log("Connection to CosmosDB successful"))
+//   .catch(err => console.error(err));
 
 //middleware
 app.use(morgan("dev"));

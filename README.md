@@ -13,9 +13,9 @@ Technology Stack
 
 
     -NodeJs/Express
-    -Azure CosmosDB(Mongo API)
-    -Azure Functions
-    -Azure Cognitive Services
+    -Mongo DB/Azure CosmosDB(Mongo API)
+    -Azure Functions/AWS Lambda- Or maybe attach a pre save hook on the blogs to fetch external data and save in the blog(e.g the sentiment analysis from AWS or Azure)
+    -Azure Cognitive Services-Text Analytics or AWS Comprehend
     -React front-end(later)
 
 Functionality
@@ -32,7 +32,7 @@ Functionality
     -Only comment writers can delete them
     -Anonymous users should be able to view the details of bloggers who have labelled their profiles as public
     -Anonymous users cannot view any blogs or any users labelled 'restricted'
-    -Include text analytics from Microsoft Cognitive Services to automatically detect the language of the blog post and Identify the key words and phrases the blog is taking about, this functionality though possible to implement through the api itself will be implemented by an Azure Function App which will be triggered every time a new document is added to our Cosmos DB(now you know why I choose Cosmos :)).The function will query the text analytics service and write back the result to the Cosmos DB (but wouldn't this cause an infinite loop if it is writing back to the same collection ??? will found out when I implement it)
+    -Include text analytics from Microsoft Cognitive Services or Amazon Comprehend to automatically detect the language of the blog post and Identify the key words and phrases the blog is taking about, this functionality though possible to implement through the api itself will be implemented by an Azure Function App which will be triggered every time a new document is added to our Cosmos DB(now you know why I choose Cosmos :)).The function will query the text analytics service and write back the result to the Cosmos DB (but wouldn't this cause an infinite loop if it is writing back to the same collection ??? will found out when I implement it)
     -Deploy to Azure App Service or Ellastic Beanstalk
     
 Routes
@@ -82,7 +82,8 @@ Things to Use
 Additional Functionality(For the near Future Implementation)
 
     -Write automated tests for the api and hook it up to a continous delivery pipeline such as Travis CI, Azure Pipeline or AWS CodePipeline
-    -Add Social Authentication - Twitter,Facebook,Google,LinkedIn
+    -Add draft.js framework to enable rich text editing in both the blogs and comments (e.g emojies, bold,image embedding etc)
+    -Add Social Authentication -Facebook,Google
     -React front-end
     -React Native mobile applications
     -Functionality to enable upload of profile pictures and pictures for the particular blog- use with Azure Blob Storage or Amazon S3

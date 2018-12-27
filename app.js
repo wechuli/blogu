@@ -59,10 +59,6 @@ mongoose
 //   .then(() => console.log("Connection to CosmosDB successful"))
 //   .catch(err => console.error(err));
 
-//middleware
-app.use(morgan("dev"));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 //Routes
 

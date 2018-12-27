@@ -49,7 +49,11 @@ const userSchema = new Schema({
     type: String,
     enum: ["public", "restricted", "private"]
   },
-  dob: Date
+  dob: Date,
+  is_admin: {
+    type: Boolean,
+    required: true
+  }
 });
 
 userSchema.pre("save", async function(next) {

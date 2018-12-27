@@ -1,4 +1,18 @@
 const User = require("../models/User.Model");
+const env = require("dotenv").load(); //Use the .env file to load the variables
+const JWT = require("jsonwebtoken");
+
+signToken = user => {
+  return (token = JWT.sign(
+    {
+      iss: "blogu",
+      sub: user._id,
+      iat: new Date().getTime(), //current time
+      exp: new Date().setDate(new Date().getDate() + 1) //current date + 1 day ahead
+    },
+    process.env.JWT_SECRET
+  ));
+};
 
 module.exports = {
   //get all users whose profiles are listed as public or restricted
@@ -8,7 +22,10 @@ module.exports = {
     res.status(200).json(users);
   },
   signIn: async (req, res) => {
-    res.json("You have reached the route to signin");
+    console.log(req.user);
+    //User is already authenticated, send back json token
+    const token = signToken(req.user);
+    res.status(200).json({ message: "User successfully authenticated", token });
   },
 
   //create a new local user, and send back jwt token
@@ -20,9 +37,11 @@ module.exports = {
       //   return res.status(500).json({ error: "The User already exists" });
       // }
 
-      const findexistingUser = await User.findOne({ email: req.value.body.email });
+      const checkUser = await User.findOne({
+        email: req.value.body.email
+      });
 
-      if (findexistingUser !== null) {
+      if (checkUser) {
         return res.status(500).json({ error: "The User already exists" });
       }
       const userReq = {
@@ -30,12 +49,17 @@ module.exports = {
         email: req.value.body.email,
         "local.password": req.value.body.password,
         blogger_since: Date.now(),
-        method: "local"
+        method: "local",
+        is_admin: false
       };
-      const newUser = await new User(userReq);
+      const newUser = new User(userReq);
 
       await newUser.save();
-      res.status(201).json({ message: "New User Created", user: newUser });
+
+      //sign and respond with a token
+
+      const token = signToken(newUser);
+      res.status(201).json({ message: "New User Created", token });
     } catch (error) {
       res.status(500).json(error);
     }

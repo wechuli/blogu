@@ -25,9 +25,18 @@ module.exports = {
     res.json({ message: "All public blogs" });
   },
 
+  //get a single public blog with all its comments
+  getSinglePublicBlog: async (req, res) => {
+    res.json({ message: "Single public blog" });
+  },
+
   //get all public and restricted blogs
   getAllBlogs: async (req, res) => {
     res.json({ message: "All blogs-public and restricted" });
+  },
+
+  getSingleBlog: async (req, res) => {
+    res.json({ message: "Get single blog -public or restricted" });
   },
 
   //recrete a blog - PUT

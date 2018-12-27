@@ -5,8 +5,10 @@ const blogController = require("../controllers/blogController");
 
 router.post("/create", blogController.createBlog);
 router.get("/public", blogController.getPublicBlogs);
+router.get('/public/:blogId',blogController.getSinglePublicBlog); //get a single public blog
 
 router.get("/", blogController.getAllBlogs);
+router.get("/:blogId", blogController.getSingleBlog);
 router
   .route("/edit/:blogId")
   .put(blogController.reCreateBlog)

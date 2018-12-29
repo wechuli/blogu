@@ -23,9 +23,9 @@ app.use(morgan("dev"));
 app.use(passport.initialize());
 
 
-//Connect to Cosmos DB
 
-//Connect to Cosmos DB Database
+
+//Connect to Mongo DB
 mongoose.Promise = global.Promise; //Make the global promise equal to the mongoose promise
 
 mongoose

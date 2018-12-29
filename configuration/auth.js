@@ -5,6 +5,7 @@ const env = require("dotenv").load(); //Use the .env file to load the variables
 const User = require("../models/User.Model");
 const LocalStrategy = require("passport-local").Strategy;
 
+//Local strategy for signins
 passport.use(
   "local",
   new LocalStrategy(
@@ -25,6 +26,32 @@ passport.use(
           return done(null, false);
         }
         //Otherwise pass the user to the controller function
+        done(null, user);
+      } catch (error) {
+        done(error, false);
+      }
+    }
+  )
+);
+
+//JWT strategy
+passport.use(
+  "jwt",
+  new JWTStrategy(
+    {
+      jwtFromRequest: ExtractJwt.fromHeader("authorization"),
+      secretOrKey: process.env.JWT_SECRET
+    },
+    async (payload, done) => {
+      try {
+        //Find the user specified in the token
+        const user = await User.findById(payload.sub);
+
+        //If the user doesn't exist, handle it
+        if (!user) {
+          return done(null, false);
+        }
+        //otherwise, pass the user to the controller function
         done(null, user);
       } catch (error) {
         done(error, false);

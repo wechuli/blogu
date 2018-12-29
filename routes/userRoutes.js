@@ -8,7 +8,13 @@ const {
 const passport = require("passport");
 const passportConfig = require("../configuration/auth");
 
-router.get("/", userController.getAllUsers);
+//get all public and restricted users
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  userController.getAllUsers
+);
+
 router.post(
   "/signup",
   singupValidation(schemas.userSignUpSchema),

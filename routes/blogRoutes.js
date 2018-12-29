@@ -1,11 +1,15 @@
 const router = require("express").Router();
 const blogController = require("../controllers/blogController");
+const passport = require("passport");
+const passportConfig = require("../configuration/auth");
 
-
-
-router.post("/create", blogController.createBlog);
+router.post(
+  "/create",
+  passport.authenticate("jwt", { session: false }),
+  blogController.createBlog
+);
 router.get("/public", blogController.getPublicBlogs);
-router.get('/public/:blogId',blogController.getSinglePublicBlog); //get a single public blog
+router.get("/public/:blogId", blogController.getSinglePublicBlog); //get a single public blog
 
 router.get("/", blogController.getAllBlogs);
 router.get("/:blogId", blogController.getSingleBlog);

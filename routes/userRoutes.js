@@ -30,12 +30,22 @@ router.post(
 );
 
 router.post("/auth/facebook", userController.facebookAuth);
-router.post("/auth/google", userController.googleAuth);
+router.post(
+  "/auth/google",
+  passport.authenticate("googleToken", { session: false }),
+  userController.googleAuth
+);
 router.get("/public", userController.getPublicProfiles);
 
 router
   .route("/user/:userId")
-  .put(userController.reCreateUser)
-  .patch(userController.updateUser);
+  .put(
+    passport.authenticate("jwt", { session: false }),
+    userController.reCreateUser
+  )
+  .patch(
+    passport.authenticate("jwt", { session: false }),
+    userController.updateUser
+  );
 
 module.exports = router;

@@ -17,9 +17,9 @@ signToken = user => {
 module.exports = {
   //get all users whose profiles are listed as public or restricted
   getAllUsers: async (req, res) => {
-    const users = await User.find({});
+    const users = await User.find({}, "firstName blogs blogger_since bio");
 
-    res.status(200).json(users);
+    res.status(200).json({ message: "find all users returned", users });
   },
   signIn: async (req, res) => {
     console.log(req.user);
@@ -72,7 +72,22 @@ module.exports = {
 
   //login, or create a new google user and return jwt token
   googleAuth: async (req, res) => {
-    res.json({ message: "You have reached the google route" });
+    //Remember, we have the user in the request object, we'll check first if we have seen this user before using the email address(ideally, shouldn't we ccheck using the google id)
+    const isExistingUser = await User.findOne({ email: req.user.email });
+    if (!isExistingUser) {
+      //create the user
+      const newUser = new User(req.user);
+      newUser.is_admin = false;
+      newUser.blogger_since = Date.now();
+
+      await newUser.save();
+      //generate a token for the new user and send back
+      const token = signToken(newUser);
+      res.status(200).json({ token });
+    }
+    //else if we have this user in the database, we can just send back a token without saving anything, and we would have a valid object returned in the 'isExisting user variable'
+    const token = signToken(isExistingUser);
+    res.json({ token });
   },
 
   //get all profiles listed as public

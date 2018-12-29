@@ -5,10 +5,13 @@ module.exports = {
   createBlog: async (req, res) => {
     try {
       //get the author from the token
+      console.log(req.user._id);
       const newBlog = new Blog(req.body);
-      const user = await User.findById(req.body.author);
+      const user = await User.findById(req.user._id);
 
       newBlog.published_date = Date.now();
+      newBlog.author = req.user._id;
+      console.log(newBlog);
 
       await newBlog.save();
       user.blogs.push(newBlog);

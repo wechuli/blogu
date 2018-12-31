@@ -67,7 +67,34 @@ module.exports = {
 
   //login, or create a new facebook user and return jwt token
   facebookAuth: async (req, res) => {
-    res.json({ message: "You have reached the facebook route" });
+    //Remember, we have the user in the request object, we'll check first if we have seen this user before using the email address(ideally, shouldn't we ccheck using the facebook id)
+    const isExistingUser = await User.findOne({ email: req.user.email });
+    if (!isExistingUser) {
+      //create the user
+      const newUser = new User(req.user);
+      newUser.is_admin = false;
+      newUser.blogger_since = Date.now();
+
+      await newUser.save();
+      //generate a token for the new user and send back
+      const token = signToken(newUser);
+      res.status(200).json({ token });
+    }
+    //else if we have this user in the database, we can just send back a token without saving anything, and we would have a valid object returned in the 'isExisting user variable'
+    //A problem here- what if the user already signed up with a local account and is now trying to sign up through google
+
+    if (isExistingUser.method === "local") {
+      res.status(500).json({
+        error: "User already exists, please sign up using email and password"
+      });
+    }
+    if (isExistingUser.method === "google") {
+      res.status(500).json({
+        error: "User already exists, please sign up using your google account"
+      });
+    }
+    const token = signToken(isExistingUser);
+    res.json({ token });
   },
 
   //login, or create a new google user and return jwt token
@@ -86,6 +113,17 @@ module.exports = {
       res.status(200).json({ token });
     }
     //else if we have this user in the database, we can just send back a token without saving anything, and we would have a valid object returned in the 'isExisting user variable'
+    //A problem here- what if the user already signed up with a local account and is now trying to sign up through google
+    if (isExistingUser.method === "local") {
+      res.status(500).json({
+        error: "User already exists, please sign up using email and password"
+      });
+    }
+    if (isExistingUser.method === "facebook") {
+      res.status(500).json({
+        error: "User already exists, please sign in using you Facebook account"
+      });
+    }
     const token = signToken(isExistingUser);
     res.json({ token });
   },

@@ -29,7 +29,11 @@ router.post(
   userController.signIn
 );
 
-router.post("/auth/facebook", userController.facebookAuth);
+router.post(
+  "/auth/facebook",
+  passport.authenticate("facebookToken", { session: false }),
+  userController.facebookAuth
+);
 router.post(
   "/auth/google",
   passport.authenticate("googleToken", { session: false }),

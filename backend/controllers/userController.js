@@ -84,12 +84,12 @@ module.exports = {
     //A problem here- what if the user already signed up with a local account and is now trying to sign up through google
 
     if (isExistingUser.method === "local") {
-      res.status(500).json({
+      return res.status(500).json({
         error: "User already exists, please sign up using email and password"
       });
     }
     if (isExistingUser.method === "google") {
-      res.status(500).json({
+      return res.status(500).json({
         error: "User already exists, please sign up using your google account"
       });
     }
@@ -115,12 +115,12 @@ module.exports = {
     //else if we have this user in the database, we can just send back a token without saving anything, and we would have a valid object returned in the 'isExisting user variable'
     //A problem here- what if the user already signed up with a local account and is now trying to sign up through google
     if (isExistingUser.method === "local") {
-      res.status(500).json({
+     return res.status(500).json({
         error: "User already exists, please sign up using email and password"
       });
     }
     if (isExistingUser.method === "facebook") {
-      res.status(500).json({
+      return res.status(500).json({
         error: "User already exists, please sign in using you Facebook account"
       });
     }

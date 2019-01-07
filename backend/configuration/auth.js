@@ -25,7 +25,16 @@ passport.use(
         //If the user exists, check if the password is correct
         const isMatch = await user.isValidPassword(password);
         if (!isMatch) {
+          console.log("Password Invalid");
           return done(null, false);
+        }
+        //Check to see if the user has verified their account through email
+        if (user.active === false) {
+          console.log("User is inactive");
+          return done(null, false, {
+            message:
+              "Please verify your email address first and attempt to login again"
+          });
         }
         //Otherwise pass the user to the controller function
         done(null, user);

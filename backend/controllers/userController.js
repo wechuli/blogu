@@ -1,6 +1,8 @@
 const User = require("../models/User.Model");
 const env = require("dotenv").load(); //Use the .env file to load the variables
 const JWT = require("jsonwebtoken");
+const randomstring = require("randomstring");
+const mailer = require("../configuration/mailer");
 
 signToken = user => {
   return (token = JWT.sign(
@@ -44,22 +46,43 @@ module.exports = {
       if (checkUser) {
         return res.status(500).json({ error: "The User already exists" });
       }
+
+      const secret_token = randomstring.generate(64);
       const userReq = {
         firstName: req.value.body.firstName,
         email: req.value.body.email,
         "local.password": req.value.body.password,
         blogger_since: Date.now(),
         method: "local",
-        is_admin: false
+        is_admin: false,
+        secret_token,
+        active: false
       };
+
       const newUser = new User(userReq);
 
       await newUser.save();
 
-      //sign and respond with a token
+      //we will not send a token just yet until the user verifies the email address
 
-      const token = signToken(newUser);
-      res.status(201).json({ message: "New User Created", token });
+      // Compose the email
+      const html = `Hi there, thank you for signing up for the blogu application where your ideas come to life     
+     <br/><br/>
+     Please verify your email by clicking the link http://localhost:5000/users/verify/${secret_token}
+     You did it dude.
+     `;
+      //send the email
+      await mailer.sendEmail(
+        "blogu@wechulipaul.com",
+        req.value.body.email,
+        "Please verify your email",
+        html
+      );
+
+      res.status(201).json({
+        message:
+          "New User Created, check your email address to verify you account"
+      });
     } catch (error) {
       res.status(500).json(error);
     }
@@ -115,7 +138,7 @@ module.exports = {
     //else if we have this user in the database, we can just send back a token without saving anything, and we would have a valid object returned in the 'isExisting user variable'
     //A problem here- what if the user already signed up with a local account and is now trying to sign up through google
     if (isExistingUser.method === "local") {
-     return res.status(500).json({
+      return res.status(500).json({
         error: "User already exists, please sign up using email and password"
       });
     }
@@ -126,6 +149,25 @@ module.exports = {
     }
     const token = signToken(isExistingUser);
     res.json({ token });
+  },
+  verifyEmail: async (req, res) => {
+    const { token } = req.params;
+    console.log(token);
+    console.log(req.params);
+    try {
+      const user = await User.findOne({ secret_token: token }); //Use findOne not find, two different things found out the hard way
+      if (!user) {
+        return res.status(401).json({ error: "Access token denied" });
+      }
+      user.active = true;
+      user.secret_token = "";
+      await user.save();
+      res
+        .status(200)
+        .json({ message: "Email successfully verified, you may login" });
+    } catch (error) {
+      res.status(401).json({ error });
+    }
   },
 
   //get all profiles listed as public

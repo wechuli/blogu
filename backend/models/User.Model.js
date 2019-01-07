@@ -53,7 +53,9 @@ const userSchema = new Schema({
   is_admin: {
     type: Boolean,
     required: true
-  }
+  },
+  secret_token: String,
+  active: Boolean
 });
 
 userSchema.pre("save", async function(next) {
@@ -61,13 +63,16 @@ userSchema.pre("save", async function(next) {
     if (this.method !== "local") {
       next();
     }
-    //Genrate a salt
-    const salt = await bcrypt.genSalt(10);
-    //Generate password hash  salt+password
-    const passwordhash = await bcrypt.hash(this.local.password, salt); //hash the password
+    if (this.isNew) {
+      //Genrate a salt
+      const salt = await bcrypt.genSalt(10);
+      //Generate password hash  salt+password
+      const passwordhash = await bcrypt.hash(this.local.password, salt); //hash the password
 
-    //reasign the hashed password as the new password
-    this.local.password = passwordhash;
+      //reasign the hashed password as the new password
+      this.local.password = passwordhash;
+      next();
+    }
     next();
   } catch (error) {
     next(error);

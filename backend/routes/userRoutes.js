@@ -20,6 +20,8 @@ router.post(
   singupValidation(schemas.userSignUpSchema),
   userController.createNewUser
 );
+router.get("/verify/:token", userController.verifyEmail);
+
 router.post(
   "/signin",
   [

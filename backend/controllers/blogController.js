@@ -3,6 +3,8 @@ const User = require("../models/User.Model");
 
 module.exports = {
   createBlog: async (req, res) => {
+    //Add text analytics from Azure here
+
     try {
       //get the author from the token
       console.log(req.user._id);
@@ -25,7 +27,14 @@ module.exports = {
 
   //get all public blogs
   getPublicBlogs: async (req, res) => {
-    res.json({ message: "All public blogs" });
+    try {
+      const blogs = await Blog.find({ visibility: "public" });
+      res.status(200).json(blogs);
+    } catch (err) {
+      res
+        .status(500)
+        .json({ error: "An error ocurred while processing your results", err });
+    }
   },
 
   //get a single public blog with all its comments

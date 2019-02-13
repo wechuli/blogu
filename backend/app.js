@@ -62,8 +62,8 @@ mongoose
 
 //Routes
 
-app.use("/users", userRouter);
-app.use("/blogs", blogRouter);
+app.use("api/v1/users", userRouter);
+app.use("api/v1/blogs", blogRouter);
 
 
 

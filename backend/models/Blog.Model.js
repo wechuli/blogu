@@ -21,6 +21,7 @@ const blogSchema = new Schema({
     enum: ["public", "private", "restricted", "draft"]
   
   },
+  category:[String],
   published_date: Date,
   edit_date: Date,
   comments: [
